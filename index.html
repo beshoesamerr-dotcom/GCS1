@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCS STORES - متجر كاميرات وأنظمة أمنية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#111111',
+                            red: '#8b0000',
+                            accent: '#739E38',
+                            hover: '#628530'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f9fafb;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b0000;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <div class="bg-gray-100 text-xs py-1.5 px-4 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4 text-gray-600">
+                <span><i class="fa-solid fa-phone-volume ml-1 text-brand-red"></i> خدمة العملاء: 01000000000</span>
+                <span><i class="fa-solid fa-location-dot ml-1 text-brand-red"></i> القاهرة، مصر</span>
+            </div>
+            <div class="flex items-center gap-4 font-semibold">
+                <a href="#" class="hover:text-brand-red transition">العربية | English</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Logo & Brand -->
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="bg-brand-dark text-white px-3 py-1.5 rounded font-black text-xl tracking-wider">
+                        GCS<span class="text-brand-accent"> STORES</span>
+                        <div class="text-[9px] tracking-widest text-center font-light text-gray-300">SECURITY SYSTEMS</div>
+                    </div>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 text-2xl focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="w-full md:w-5/12 flex relative">
+                <input type="text" id="search-input" placeholder="أو علامات تجارية SKU، ابحث عن منتجات أو ..." class="w-full bg-gray-100 border border-gray-300 rounded-r-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-red transition">
+                <button id="search-btn" class="bg-brand-red hover:bg-red-900 text-white px-6 rounded-l-lg font-medium text-sm transition flex items-center justify-center">
+                    بحث
+                </button>
+            </div>
+
+            <!-- User Actions & Cart -->
+            <div class="flex items-center gap-6 text-gray-700">
+                <button onclick="openLoginModal()" class="flex items-center gap-2 text-sm font-semibold hover:text-brand-red transition border border-gray-300 px-4 py-2 rounded-lg">
+                    <i class="fa-regular fa-user"></i>
+                    <span>تسجيل الدخول</span>
+                </button>
+                <a href="#" class="relative hover:text-brand-red transition text-xl" title="المفضلة">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="absolute -top-2 -right-2 bg-brand-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </a>
+                <button onclick="toggleCartDrawer()" class="relative flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition">
+                    <i class="fa-solid fa-cart-shopping text-brand-red text-xl"></i>
+                    <span id="cart-count" class="bg-brand-red text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Categories Bar -->
+        <nav class="bg-brand-dark text-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <ul id="category-nav-list" class="flex items-center overflow-x-auto whitespace-nowrap gap-6 py-2.5 text-sm font-medium scrollbar-none">
+                    <li><a href="#" data-cat="screens" class="nav-cat-link hover:text-brand-accent transition">شاشات</a></li>
+                    <li><a href="#" data-cat="computers" class="nav-cat-link hover:text-brand-accent transition">كمبيوتر وموبايل</a></li>
+                    <li><a href="#" data-cat="electronics" class="nav-cat-link hover:text-brand-accent transition">الكترونيات</a></li>
+                    <li><a href="#" data-cat="cameras" class="nav-cat-link text-brand-accent font-bold border-b-2 border-brand-accent pb-1">كاميرات وأنظمة أمنية</a></li>
+                    <li><a href="#" data-cat="audio" class="nav-cat-link hover:text-brand-accent transition">أنظمة صوتية</a></li>
+                    <li><a href="#" data-cat="smarthome" class="nav-cat-link hover:text-brand-accent transition">سمارت هوم</a></li>
+                    <li><a href="#" data-cat="appliances" class="nav-cat-link hover:text-brand-accent transition">أجهزة منزلية</a></li>
+                    <li><a href="#" data-cat="offers" class="nav-cat-link hover:text-brand-accent transition text-yellow-400">عروض</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        
+        <!-- Breadcrumb & Results Title -->
+        <div class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+            <div class="flex items-center gap-2">
+                <h1 id="current-category-title" class="text-xl font-bold text-gray-900">كاميرات وأنظمة أمنية</h1>
+                <span class="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded-full font-bold" id="product-count">0</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-500">الترتيب:</span>
+                <select id="sort-select" class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none">
+                    <option value="default">المقترح</option>
+                    <option value="price-low">السعر: من الأقل للأعلى</option>
+                    <option value="price-high">السعر: من الأعلى للأقل</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Sidebar Filters -->
+            <aside class="lg:col-span-1 bg-white p-4 rounded-xl shadow-sm border border-gray-200 h-fit space-y-6">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="font-bold text-gray-800 text-lg">الفلاتر</h3>
+                    <button id="reset-filters" class="text-xs text-brand-red hover:underline">إعادة ضبط</button>
+                </div>
+
+                <!-- Category Filter dropdown -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">الأقسام الفرعية</label>
+                    <select id="filter-category" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none">
+                        <option value="all">كل الأقسام الفرعية</option>
+                        <option value="indoor">كاميرات داخلية</option>
+                        <option value="outdoor">كاميرات خارجية</option>
+                    </select>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">السعر الأقصى (EGP)</label>
+                    <input type="range" id="price-range" min="500" max="15000" step="500" value="15000" class="w-full accent-brand-accent">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>500 EGP</span>
+                        <span id="price-val" class="font-bold text-gray-800">15000 EGP</span>
+                    </div>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">العلامة التجارية</label>
+                    <div class="space-y-1.5 text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="GCS" class="brand-checkbox rounded text-brand-accent focus:ring-0" checked> GCS Pro</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="VisionMax" class="brand-checkbox rounded text-brand-accent focus:ring-0" checked> VisionMax</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="SecurGuard" class="brand-checkbox rounded text-brand-accent focus:ring-0" checked> SecurGuard</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="TechHome" class="brand-checkbox rounded text-brand-accent focus:ring-0" checked> TechHome</label>
+                    </div>
+                </div>
+
+                <!-- Availability Filter -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">التوفر</label>
+                    <div class="space-y-1.5 text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="in-stock-only" class="rounded text-brand-accent focus:ring-0"> متوفر في المخزن فقط</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Product Grid Container -->
+            <div class="lg:col-span-3">
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Products rendered dynamically via JavaScript -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Shopping Cart Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity duration-300">
+        <div class="absolute top-0 left-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col transform -translate-x-full transition-transform duration-300" id="cart-drawer-content">
+            <div class="p-4 bg-brand-dark text-white flex justify-between items-center">
+                <h2 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-cart-shopping"></i> سلة التسوق</h2>
+                <button onclick="toggleCartDrawer()" class="text-gray-300 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+                <!-- Cart items added dynamically -->
+            </div>
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex justify-between items-center mb-4 text-lg font-bold">
+                    <span>الإجمالي:</span>
+                    <span id="cart-total" class="text-brand-red">0.00 EGP</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-brand-accent hover:bg-brand-hover text-white py-3 rounded-lg font-bold transition shadow-md">إتمام الشراء الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <button onclick="closeLoginModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center mb-6">
+                <div class="bg-brand-dark text-white inline-block px-4 py-1.5 rounded font-black text-xl mb-2">GCS<span class="text-brand-accent"> STORES</span></div>
+                <h3 class="text-xl font-bold text-gray-800">تسجيل الدخول إلى حسابك</h3>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">البريد الإلكتروني أو رقم الهاتف</label>
+                    <input type="text" required class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" placeholder="example@gcs.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">كلمة المرور</label>
+                    <input type="password" required class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-brand-red hover:bg-red-900 text-white py-3 rounded-lg font-bold transition">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-brand-dark text-white px-5 py-3 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-brand-accent text-lg"></i>
+        <span id="toast-msg">تمت الإضافة بنجاح</span>
+    </div>
+
+    <script>
+        // Comprehensive Product Data for all GCS STORES Categories
+        const products = [
+            // Cameras & Security Systems
+            {
+                id: 1,
+                name: "كاميرا 2 ميجا داخلية FHD تحمل على جميع أجهزة... كاميرات داخلية",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "GCS",
+                price: 450.00,
+                oldPrice: 500.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=GCS+Indoor+2MP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 2,
+                name: "كاميرا 2 ميجا IP بخاصية Dual light كاميرات داخلية",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "VisionMax",
+                price: 1790.00,
+                oldPrice: 1990.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=IP+Camera+DualLight",
+                inStock: false,
+                badge: "سيتم توفيره قريباً"
+            },
+            {
+                id: 3,
+                name: "كاميرا IP داخلي 5 ميجا كاميرات داخلية",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "SecurGuard",
+                price: 3445.00,
+                oldPrice: 3740.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Indoor+5MP+IP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 4,
+                name: "كاميرا IP بدقة 2 ميجا داخلية FHD تحمل ع...",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "GCS",
+                price: 930.00,
+                oldPrice: 990.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=GCS+2MP+FHD",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 5,
+                name: "كاميرا IP بدقة 4 ميجا داخلية تعمل على جميع ...",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "VisionMax",
+                price: 1790.00,
+                oldPrice: 2000.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=4MP+Indoor+IP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 6,
+                name: "كاميرا IP داخلي 8 ميجا كاميرات داخلية",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "SecurGuard",
+                price: 1920.00,
+                oldPrice: 2050.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=8MP+Indoor+IP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 7,
+                name: "كاميرا 8 ميجا داخلية تعمل على جميع أنواع ...",
+                mainCategory: "cameras",
+                category: "indoor",
+                brand: "GCS",
+                price: 1025.00,
+                oldPrice: 1150.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=GCS+8MP+Universal",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 8,
+                name: "كاميرا IP خارجية 5 ميجا كاميرات خارجية",
+                mainCategory: "cameras",
+                category: "outdoor",
+                brand: "VisionMax",
+                price: 3445.00,
+                oldPrice: 3740.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Outdoor+5MP+IP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 9,
+                name: "كاميرا IP خارجية 4 ميجا كاميرات خارجية",
+                mainCategory: "cameras",
+                category: "outdoor",
+                brand: "SecurGuard",
+                price: 2220.00,
+                oldPrice: 2500.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Outdoor+4MP+IP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 10,
+                name: "كاميرا IP خارجية 2 ميجا كاميرات خارجية",
+                mainCategory: "cameras",
+                category: "outdoor",
+                brand: "GCS",
+                price: 1000.00,
+                oldPrice: 1150.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=GCS+Outdoor+2MP",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 11,
+                name: "كاميرا IP خارجية 4 ميجا كاميرات خارجية",
+                mainCategory: "cameras",
+                category: "outdoor",
+                brand: "VisionMax",
+                price: 1790.00,
+                oldPrice: 2000.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Outdoor+4MP+Pro",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 12,
+                name: "كاميرا IP خارجية 8 ميجا ألوان كاميرات خارجية",
+                mainCategory: "cameras",
+                category: "outdoor",
+                brand: "SecurGuard",
+                price: 1750.00,
+                oldPrice: 1950.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Color+Outdoor+8MP",
+                inStock: false,
+                badge: "سيتم توفيره قريباً"
+            },
+
+            // Screens Category
+            {
+                id: 13,
+                name: "شاشة سمارت 43 بوصة الفئة الاقتصادية FHD",
+                mainCategory: "screens",
+                category: "indoor",
+                brand: "GCS",
+                price: 6800.00,
+                oldPrice: 7500.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Smart+TV+43",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 14,
+                name: "شاشة 55 بوصة 4K UHD ذكية بدون إطار",
+                mainCategory: "screens",
+                category: "outdoor",
+                brand: "VisionMax",
+                price: 12500.00,
+                oldPrice: 14000.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Smart+TV+55+4K",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Computers & Mobiles
+            {
+                id: 15,
+                name: "لابتوب الألعاب Core i7 جيل 12 مع كارت رسومات RTX",
+                mainCategory: "computers",
+                category: "indoor",
+                brand: "SecurGuard",
+                price: 28000.00,
+                oldPrice: 31000.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Gaming+Laptop",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+            {
+                id: 16,
+                name: "هاتف ذكي 5G بشاشة AMOLED وسعة 256 جيجابايت",
+                mainCategory: "computers",
+                category: "indoor",
+                brand: "GCS",
+                price: 8900.00,
+                oldPrice: 9500.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Smart+Phone+5G",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Electronics
+            {
+                id: 17,
+                name: "سماعات رأس لاسلكية بخاصية إلغاء الضوضاء ANC",
+                mainCategory: "electronics",
+                category: "indoor",
+                brand: "VisionMax",
+                price: 1450.00,
+                oldPrice: 1800.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Wireless+Headphones",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Audio Systems
+            {
+                id: 18,
+                name: "مكبر صوت بلوتوث محمول مقاوم للماء IPX7",
+                mainCategory: "audio",
+                category: "outdoor",
+                brand: "SecurGuard",
+                price: 1200.00,
+                oldPrice: 1400.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Bluetooth+Speaker",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Smart Home
+            {
+                id: 19,
+                name: "مساعد منزلي ذكي مع إضاءة LED تفاعلية",
+                mainCategory: "smarthome",
+                category: "indoor",
+                brand: "TechHome",
+                price: 2100.00,
+                oldPrice: 2400.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Smart+Assistant",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Home Appliances
+            {
+                id: 20,
+                name: "ماكينة قهوة إسبريسو رقمية بقوة 15 بار",
+                mainCategory: "appliances",
+                category: "indoor",
+                brand: "TechHome",
+                price: 4300.00,
+                oldPrice: 4900.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Espresso+Machine",
+                inStock: true,
+                badge: "عرض خاص"
+            },
+
+            // Special Offers
+            {
+                id: 21,
+                name: "عرض خاص: طقم كاميرات مراقبة 4 قنوات كامل مع جهاز تسجيل",
+                mainCategory: "offers",
+                category: "outdoor",
+                brand: "GCS",
+                price: 3999.00,
+                oldPrice: 5500.00,
+                image: "https://placehold.co/300x300/f8f9fa/333333?text=Camera+Kit+Offer",
+                inStock: true,
+                badge: "تخفيض كبير"
+            }
+        ];
+
+        let cart = [];
+        let currentActiveMainCategory = 'cameras';
+
+        // DOM Elements
+        const productsGrid = document.getElementById('products-grid');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const filterCategory = document.getElementById('filter-category');
+        const priceRange = document.getElementById('price-range');
+        const priceVal = document.getElementById('price-val');
+        const inStockOnly = document.getElementById('in-stock-only');
+        const sortSelect = document.getElementById('sort-select');
+        const productCount = document.getElementById('product-count');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const currentCategoryTitle = document.getElementById('current-category-title');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartDrawerContent = document.getElementById('cart-drawer-content');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-msg');
+        const loginModal = document.getElementById('login-modal');
+
+        // Category Navigation Mapping Names
+        const categoryNamesMap = {
+            'screens': 'شاشات عرض ذكية',
+            'computers': 'أجهزة الكمبيوتر والموبايل',
+            'electronics': 'الإلكترونيات وملحقاتها',
+            'cameras': 'كاميرات وأنظمة أمنية',
+            'audio': 'الأنظمة الصوتية',
+            'smarthome': 'أجهزة المنزل الذكي',
+            'appliances': 'الأجهزة المنزلية',
+            'offers': 'عروض وخصومات مميزة'
+        };
+
+        // Render products
+        function renderProducts(items) {
+            productsGrid.innerHTML = '';
+            productCount.textContent = items.length;
+
+            if (items.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-gray-500 bg-white rounded-xl border border-gray-200 shadow-sm">
+                        <i class="fa-solid fa-box-open text-4xl mb-3 text-gray-400"></i>
+                        <p class="text-lg font-bold">لا توجد منتجات مطابقة للبحث أو الفلاتر الحالية</p>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-col justify-between hover:shadow-md transition relative group';
+                
+                card.innerHTML = `
+                    <div>
+                        <!-- Badge -->
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-red-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">${product.badge}</span>
+                            <div class="flex flex-col gap-1 text-gray-400">
+                                <button onclick="showToast('تمت الإضافة للمفضلة')" class="hover:text-brand-red transition"><i class="fa-regular fa-heart"></i></button>
+                                <button onclick="showToast('تمت مقارنة المنتج')" class="hover:text-brand-red transition"><i class="fa-solid fa-sliders"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="relative overflow-hidden mb-3 h-48 flex items-center justify-center">
+                            <img src="${product.image}" alt="${product.name}" class="object-contain h-full group-hover:scale-105 transition duration-300">
+                        </div>
+
+                        <!-- Title -->
+                        <h3 class="text-xs font-semibold text-gray-800 line-clamp-2 mb-3 h-8 leading-relaxed">${product.name}</h3>
+
+                        <!-- Price -->
+                        <div class="mb-4">
+                            <div class="text-xs text-gray-400 line-through">EGP${product.oldPrice.toFixed(2)}</div>
+                            <div class="text-brand-red font-black text-lg">EGP<span class="text-xl mr-1">${product.price.toFixed(2)}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-2 mt-auto">
+                        <button onclick="addToCart(${product.id})" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold py-2 rounded-lg transition border border-gray-300">
+                            أضف إلى السلة
+                        </button>
+                        ${product.inStock ? 
+                            `<button onclick="buyNow(${product.id})" class="w-full bg-brand-accent hover:bg-brand-hover text-white text-xs font-bold py-2 rounded-lg transition shadow-sm">اشتري الآن</button>` :
+                            `<button disabled class="w-full bg-gray-400 text-white text-xs font-bold py-2 rounded-lg cursor-not-allowed">سيتم توفيره قريباً</button>`
+                        }
+                    </div>
+                `;
+                productsGrid.appendChild(card);
+            });
+        }
+
+        // Filtering and sorting logic
+        function filterAndSortProducts() {
+            let filtered = products.filter(p => {
+                // If user is searching globally, search across all products, otherwise match current main category or offers
+                const isSearching = searchInput.value.trim() !== '';
+                const matchesMainCat = isSearching || p.mainCategory === currentActiveMainCategory || (currentActiveMainCategory === 'offers' && p.mainCategory === 'offers');
+                
+                const matchesSearch = isSearching ? (p.name.toLowerCase().includes(searchInput.value.toLowerCase()) || p.brand.toLowerCase().includes(searchInput.value.toLowerCase())) : true;
+                const matchesSubCategory = filterCategory.value === 'all' || p.category === filterCategory.value;
+                const matchesPrice = p.price <= parseFloat(priceRange.value);
+                const matchesStock = !inStockOnly.checked || p.inStock;
+                
+                // Brand checkboxes
+                const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+                const matchesBrand = checkedBrands.includes(p.brand);
+
+                return matchesMainCat && matchesSearch && matchesSubCategory && matchesPrice && matchesStock && matchesBrand;
+            });
+
+            // Sorting
+            const sortVal = sortSelect.value;
+            if (sortVal === 'price-low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-high') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            renderProducts(filtered);
+        }
+
+        // Setup Navigation Clicks
+        document.querySelectorAll('.nav-cat-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-cat-link').forEach(l => {
+                    l.classList.remove('text-brand-accent', 'font-bold', 'border-b-2', 'border-brand-accent', 'pb-1');
+                });
+                link.classList.add('text-brand-accent', 'font-bold', 'border-b-2', 'border-brand-accent', 'pb-1');
+                
+                currentActiveMainCategory = link.getAttribute('data-cat');
+                currentCategoryTitle.textContent = categoryNamesMap[currentActiveMainCategory] || 'المنتجات';
+                filterCategory.value = 'all';
+                searchInput.value = '';
+                filterAndSortProducts();
+            });
+        });
+
+        // Event Listeners for Filters
+        searchInput.addEventListener('input', filterAndSortProducts);
+        searchBtn.addEventListener('click', filterAndSortProducts);
+        filterCategory.addEventListener('change', filterAndSortProducts);
+        priceRange.addEventListener('input', (e) => {
+            priceVal.textContent = e.target.value + ' EGP';
+            filterAndSortProducts();
+        });
+        inStockOnly.addEventListener('change', filterAndSortProducts);
+        sortSelect.addEventListener('change', filterAndSortProducts);
+        document.querySelectorAll('.brand-checkbox').forEach(cb => {
+            cb.addEventListener('change', filterAndSortProducts);
+        });
+        resetFiltersBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterCategory.value = 'all';
+            priceRange.value = 15000;
+            priceVal.textContent = '15000 EGP';
+            inStockOnly.checked = false;
+            document.querySelectorAll('.brand-checkbox').forEach(cb => cb.checked = true);
+            sortSelect.value = 'default';
+            filterAndSortProducts();
+        });
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.inStock) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartUI();
+            showToast('تمت إضافة المنتج إلى السلة بنجاح');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            cartCount.textContent = totalCount;
+            cartTotal.textContent = totalPrice.toFixed(2) + ' EGP';
+
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500 py-8">سلة التسوق فارغة حالياً</p>';
+                return;
+            }
+
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between border-b pb-3 gap-3';
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain bg-gray-50 rounded border p-1">
+                    <div class="flex-1">
+                        <h4 class="text-xs font-bold text-gray-800 line-clamp-1">${item.name}</h4>
+                        <div class="text-brand-red text-sm font-black">EGP ${item.price.toFixed(2)}</div>
+                        <div class="text-xs text-gray-500">الكمية: ${item.qty}</div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-brand-red transition"><i class="fa-solid fa-trash"></i></button>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+        }
+
+        function toggleCartDrawer() {
+            if (cartDrawer.classList.contains('hidden')) {
+                cartDrawer.classList.remove('hidden');
+                setTimeout(() => {
+                    cartDrawerContent.classList.remove('-translate-x-full');
+                }, 10);
+            } else {
+                cartDrawerContent.classList.add('-translate-x-full');
+                setTimeout(() => {
+                    cartDrawer.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function buyNow(productId) {
+            addToCart(productId);
+            toggleCartDrawer();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('سلة التسوق فارغة!');
+                return;
+            }
+            showToast('جاري تحويلك لبوابة الدفع الآمنة...');
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                toggleCartDrawer();
+            }, 1500);
+        }
+
+        // Modal Functions
+        function openLoginModal() {
+            loginModal.classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            closeLoginModal();
+            showToast('تم تسجيل الدخول بنجاح!');
+        }
+
+        // Toast Helper
+        function showToast(message) {
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initial render on load
+        window.onload = function() {
+            filterAndSortProducts();
+        };
+    </script>
+</body>
+</html>
